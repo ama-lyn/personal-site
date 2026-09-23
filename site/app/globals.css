@@ -1,26 +1,33 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Colors */
+  --color-cream: #FBF3EC;
+  --color-pink: #F3C9D4;
+  --color-pink-deep: #E893A9;
+  --color-lavender: #DCD2F0;
+  --color-mint: #C9E9DC;
+  --color-ink: #4A3B3F;
+  --color-paper: #FFFDF9;
+  --color-muted: #8A767B;
+  --color-border-soft: #EFE3D8;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Fonts */
+  --font-caveat: var(--font-caveat), cursive;
+  --font-nunito: var(--font-nunito), sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Radius */
+  --radius-note: 4px; /* Sticky notes, tags */
+  --radius-card: 16px; /* project cards */
+  --radius-pill: 9999px; /* nav pills */
+
+  /* Shadows */
+  --shadow-soft: 0 8px 20px rgba(74, 59, 63, 0.08);
+  --shadow-card: 0 6px 14px rgba(74, 59, 63, 0.06);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-nunito);
 }
