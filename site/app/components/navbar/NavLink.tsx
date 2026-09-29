@@ -5,6 +5,8 @@ type NavLinkProps = {
   label: string
   color: 'pink' | 'lavender' | 'mint'
   rotate?: string
+  active?: boolean
+  onClick?: () => void
 }
 
 const colorMap = {
@@ -13,12 +15,16 @@ const colorMap = {
   mint: 'bg-mint',
 }
 
-export function NavLink({ href, label, color, rotate = '0deg' }: NavLinkProps) {
+export function NavLink({ href, label, color, rotate = '0deg', active = false, onClick }: NavLinkProps) {
   return (
     <Link
       href={href}
+      onClick={onClick}
+      aria-current={active ? 'page' : undefined}
       style={{ transform: `rotate(${rotate})` }}
-      className={`${colorMap[color]} rounded-lg px-6 py-3 font-caveat text-lg text-ink shadow-[0_4px_10px_rgba(74,59,63,0.12)] transition-all hover:shadow-[0_6px_16px_rgba(74,59,63,0.16)] hover:-translate-y-1`}
+      className={`${colorMap[color]} rounded-lg px-6 py-3 font-caveat text-lg text-ink shadow-[0_4px_10px_rgba(74,59,63,0.12)] transition-all hover:shadow-[0_6px_16px_rgba(74,59,63,0.16)] hover:-translate-y-1 ${
+        active ? 'ring-2 ring-ink/30 ring-offset-2 ring-offset-cream' : ''
+      }`}
     >
       {label}
     </Link>
