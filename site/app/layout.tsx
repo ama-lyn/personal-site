@@ -5,7 +5,7 @@ import "./globals.css";
 
 const caveat = Caveat({
   subsets: ['latin'],
-  weight: ['600', '700'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-caveat',
 })
 
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${caveat.variable} ${nunito.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col p-6 md:p-12">{children}</body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

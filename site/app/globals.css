@@ -11,6 +11,10 @@
   --color-paper: #FFFDF9;
   --color-muted: #8A767B;
   --color-border-soft: #EFE3D8;
+  --color-text-muted: #7a6a66;
+  --color-sticky-pink: #f2c6d0;
+  --color-tape-lavender: #e0e7ff;
+  --color-toolbelt-fill: #FFFDF9;
 
   /* Fonts */
   --font-caveat: var(--font-caveat), cursive;
@@ -24,6 +28,8 @@
   /* Shadows */
   --shadow-soft: 0 8px 20px rgba(74, 59, 63, 0.08);
   --shadow-card: 0 6px 14px rgba(74, 59, 63, 0.06);
+  --shadow-diffused: 0 4px 12px rgba(74, 59, 63, 0.06);
+  --shadow-polaroid: 0 2px 8px rgba(74, 59, 63, 0.08);
 }
 
 body {
