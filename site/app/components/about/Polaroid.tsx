@@ -4,10 +4,11 @@ import Image from 'next/image';
 interface PolaroidProps {
   src: string;
   caption: string;
+  date?: string;
   rotation?: string;
 }
 
-export function Polaroid({ src, caption, rotation = '0deg' }: PolaroidProps) {
+export function Polaroid({ src, caption, date, rotation = '0deg' }: PolaroidProps) {
   return (
     <div
       className="bg-white p-2 pb-2 rounded-[4px] shadow-polaroid w-full transition-transform hover:rotate-0 hover:scale-[1.03]"
@@ -19,6 +20,11 @@ export function Polaroid({ src, caption, rotation = '0deg' }: PolaroidProps) {
       <p className="font-caveat text-center text-[15px] leading-tight text-muted mt-2 pb-0.5">
         {caption}
       </p>
+      {date && (
+        <p className="font-caveat text-center text-[13px] italic leading-tight text-muted/80 pb-1">
+          {date}
+        </p>
+      )}
     </div>
   );
 }
