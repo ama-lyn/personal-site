@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type React from "react";
-import { Caveat, Nunito } from "next/font/google";
+import { Caveat, Fraunces, Nunito } from "next/font/google";
 import "./globals.css";
 
 const caveat = Caveat({
@@ -15,6 +15,13 @@ const nunito = Nunito({
   variable: '--font-nunito',
 })
 
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif-journal',
+})
+
 export const metadata: Metadata = {
   title: "Personal Site",
   description: "Gwen's corner of the internet",
@@ -24,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${caveat.variable} ${nunito.variable} h-full antialiased`}
+      className={`${caveat.variable} ${nunito.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

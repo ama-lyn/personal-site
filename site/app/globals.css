@@ -19,6 +19,7 @@
   /* Fonts */
   --font-caveat: var(--font-caveat), cursive;
   --font-nunito: var(--font-nunito), sans-serif;
+  --font-serif-journal: var(--font-serif-journal), Georgia, serif;
 
   /* Radius */
   --radius-note: 4px; /* Sticky notes, tags */
@@ -36,4 +37,39 @@ body {
   background: var(--color-cream);
   color: var(--color-ink);
   font-family: var(--font-nunito);
+}
+
+@keyframes sticker-pop-float {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0) rotate(var(--sticker-rotate, 0deg));
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.2) rotate(var(--sticker-rotate, 0deg));
+  }
+  45% {
+    transform: translateY(-14px) scale(1) rotate(var(--sticker-rotate, 0deg));
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-64px) scale(0.9) rotate(var(--sticker-rotate, 0deg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes sticker-pop-float {
+    0% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    30% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
 }

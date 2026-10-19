@@ -10,18 +10,19 @@ const stampMap = {
 export function JournalCard({ post }: { post: Post }) {
   return (
     <article
-      className="group relative bg-paper rounded-[4px] shadow-soft p-7 md:p-8 pt-9 transition-transform duration-300 hover:rotate-0 hover:-translate-y-1"
+      className="group relative bg-paper rounded-[4px] shadow-soft p-8 md:p-10 pt-10 transition-transform duration-300 hover:rotate-0 hover:-translate-y-1"
       style={{ transform: `rotate(${post.rotation})` }}
     >
-      {/* torn washi edge along the top */}
+      {/* perforated tear-off edge along the top */}
       <span
         aria-hidden="true"
-        className="absolute inset-x-3 top-1.5 h-2 opacity-70"
+        className="absolute inset-x-0 top-0 h-[9px]"
         style={{
           backgroundImage:
-            'repeating-linear-gradient(90deg, var(--color-border-soft) 0 6px, transparent 6px 10px)',
-          maskImage: 'linear-gradient(to bottom, black, transparent)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black, transparent)',
+            'radial-gradient(circle at 5px 4.5px, var(--color-cream) 3px, transparent 3.5px)',
+          backgroundSize: '12px 9px',
+          backgroundRepeat: 'repeat-x',
+          backgroundPosition: 'top center',
         }}
       />
       {/* circular date stamp */}
