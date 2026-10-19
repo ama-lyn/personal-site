@@ -18,7 +18,7 @@ const colorMap = {
 const activeColorMap = {
   pink: 'bg-pink-deep text-white',
   lavender: 'bg-[#C3B4E8] text-ink',
-  mint: 'bg-[#A9DCC5] text-ink',
+  mint: 'bg-[#A9DCC5] text-white',
 }
 
 export function NavLink({ href, label, color, rotate = '0deg', active = false, onClick }: NavLinkProps) {
