@@ -23,7 +23,7 @@ const fraunces = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: "Personal Site",
+  title: "Gwendolyn Amanda | Personal Site",
   description: "Gwen's corner of the internet",
 };
 
