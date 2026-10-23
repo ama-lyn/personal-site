@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import { Polaroid } from '../about/Polaroid';
 import { SkillTag } from '../about/SkillTag';
 import { LinedNoteCard } from './LinedNoteCard';
+import { Mascot } from 'page-mascot'
 
 type Entry =
   | {
@@ -120,6 +123,23 @@ export function ScrapbookTimeline() {
           style={{ transform: 'rotate(-6deg)' }}
         >
           ♡
+        </span>
+         {/* tiger mascot 1 — upper-left gutter */}
+        <span
+          className="absolute left-2 top-[50%]"
+          style={{ transform: 'rotate(-6deg)' }}
+        >
+          <Mascot
+            directions="/mascots/tiger-directions.webp"
+            reactions="/mascots/tiger-reactions.webp"
+          /> 
+        </span>
+          {/* tiger mascot 1 — bottom-right gutter */}
+        <span className="absolute right-12 bottom-48">
+          <Mascot
+            directions="/mascots/tiger-directions.webp"
+            reactions="/mascots/tiger-reactions.webp"
+          /> 
         </span>
       </div>
 
