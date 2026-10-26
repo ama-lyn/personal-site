@@ -41,7 +41,7 @@ export function ContactCard() {
     <section className="mt-24 w-full flex justify-end">
       <div className="relative w-full max-w-[420px] bg-white rounded-[20px] p-7 pt-9 shadow-soft" style={{ transform: 'rotate(1deg)' }}>
         <a
-          href="/resume.pdf"
+          href="/not_my_resume.pdf"
           className="group absolute -top-10 -left-6 sm:-left-10 bg-white shadow-card rounded-md p-3 min-w-[140px] transition-transform hover:-rotate-[10deg] hover:scale-105"
           style={{ transform: 'rotate(-6deg)' }}
         >
