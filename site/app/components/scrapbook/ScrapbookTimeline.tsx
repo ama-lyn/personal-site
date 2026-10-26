@@ -86,7 +86,7 @@ export function ScrapbookTimeline() {
           <SkillTag label="rust 🦀" tapeColor="mint" rotation="5deg" />
         </div>
         <div className="absolute bottom-28 left-4" style={{ transform: 'rotate(-5deg)' }}>
-          <SkillTag label="chai first ☕" tapeColor="lavender" rotation="-5deg" />
+          <SkillTag label="ice cream first 🍦" tapeColor="lavender" rotation="-5deg" />
         </div>
         <svg
           viewBox="0 0 32 32"

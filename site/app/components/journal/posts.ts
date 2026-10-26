@@ -83,7 +83,7 @@ export const posts: Post[] = [
     body: [
       'Today i finally figured out that bug that was keeping me up for three days. it was a tiny typo, as always. but the feeling of relief when the code finally ran... it felt like actual magic.',
       'i keep a little list of these tiny wins now. a passing test, a clean refactor, a kind code review. they add up faster than the big milestones ever do.',
-      'so here is to the small things — the typos fixed, the chai refilled, the console with zero errors. magic, honestly.',
+      'so here is to the small things — the typos fixed, the ice cream refilled, the console with zero errors. magic, honestly.',
     ],
     month: 'APR',
     day: '12',
@@ -173,7 +173,7 @@ export const posts: Post[] = [
     body: [
       "i spent all day trying to make this portfolio perfect. then i realized: life isn't perfectly aligned, so why should my site be? imperfection is where the charm lives. so i added more tilted notes.",
       'every crooked card on this site is a decision, not an accident. straight lines are for spreadsheets. this is a scrapbook.',
-      'so if something here is slightly tilted — good. it means a human made it, probably while drinking chai.',
+      'so if something here is slightly tilted — good. it means a human made it, probably while eating ice cream.',
     ],
     month: 'MAR',
     day: '05',

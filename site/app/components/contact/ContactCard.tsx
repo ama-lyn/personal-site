@@ -52,7 +52,7 @@ export function ContactCard() {
         </a>
         <h2 className="font-caveat text-[32px] font-normal italic text-ink flex items-center gap-2">let&apos;s be pen pals <span aria-hidden="true" className="bg-lavender/60 rounded-md px-1.5 text-2xl not-italic">✉️</span></h2>
         <p className="mt-2 text-[15px] leading-relaxed text-muted">
-          i&apos;m always down to chat about design, rust, or the best places to get chai.
+          i&apos;m always down to chat about design, math, or the best places to get ice cream.
         </p>
         <div className="mt-4 flex flex-wrap gap-2.5">
           {stamps.map((stamp) => (
