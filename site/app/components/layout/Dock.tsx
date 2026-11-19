@@ -17,7 +17,6 @@ const items: { href: string; label: string; tone: Tone; icon: Icon | null }[] = 
   { href: '/blog', label: 'blog', tone: 'yellow', icon: 'blog' },
 ]
 
-// Full class names so Tailwind can see them.
 const tones: Record<Tone, { label: string; body: string; flap: string; sticker: string }> = {
   pink: { label: 'bg-pink', body: 'fill-pink', flap: 'fill-[#E7A1B4]', sticker: 'bg-pink' },
   lavender: { label: 'bg-lavender', body: 'fill-lavender', flap: 'fill-[#CFC3EA]', sticker: 'bg-lavender' },
@@ -78,7 +77,7 @@ function Envelope({ tone, open }: { tone: Tone; open: boolean }) {
   const t = tones[tone]
   if (open) {
     return (
-      <svg width="62" height="56" viewBox="0 0 56 52" aria-hidden="true">
+      <svg width="52" height="47" viewBox="0 0 56 52" aria-hidden="true">
         <path d="M2 20 28 2l26 18Z" className={`${t.flap} stroke-ink/40`} strokeWidth="1.5" strokeLinejoin="round" />
         <rect x="9" y="8" width="38" height="26" rx="2" className="fill-white stroke-ink/25" />
         <path d="M15 16h26M15 22h20" className="stroke-accent/50" strokeWidth="1.5" strokeLinecap="round" />
@@ -88,7 +87,7 @@ function Envelope({ tone, open }: { tone: Tone; open: boolean }) {
     )
   }
   return (
-    <svg width="62" height="56" viewBox="0 0 56 52" aria-hidden="true">
+    <svg width="52" height="47" viewBox="0 0 56 52" aria-hidden="true">
       <rect x="1" y="10" width="54" height="38" rx="5" className={`${t.body} stroke-ink/35`} strokeWidth="1.5" />
       <path d="M2 14l26 20 26-20" fill="none" className="stroke-ink/45" strokeWidth="1.5" />
     </svg>
@@ -99,12 +98,12 @@ function StickerGlyph({ tone, icon, active }: { tone: Tone; icon: Icon | null; a
   const motion = active
     ? '-rotate-[8deg] -translate-y-1.5 shadow-[0_8px_16px_rgba(74,59,63,0.3)]'
     : 'shadow-[0_3px_8px_rgba(74,59,63,0.2)] group-hover:-rotate-3 group-hover:-translate-y-1'
-  const base = `h-[54px] w-[54px] border-4 border-white transition-transform duration-200 motion-reduce:transition-none ${motion}`
+  const base = `h-[46px] w-[46px] border-[3px] border-white transition-transform duration-200 motion-reduce:transition-none ${motion}`
 
   if (!icon) {
     return (
       <span className={`block overflow-hidden rounded-full ${base}`}>
-        <Image src="/avatar.jpg" alt="" width={54} height={54} className="h-full w-full object-cover" />
+        <Image src="/avatar.jpg" alt="" width={46} height={46} className="h-full w-full object-cover" />
       </span>
     )
   }
@@ -113,8 +112,8 @@ function StickerGlyph({ tone, icon, active }: { tone: Tone; icon: Icon | null; a
       className={`grid place-items-center ${icon === 'work' ? 'rounded-2xl' : 'rounded-full'} ${tones[tone].sticker} ${base}`}
     >
       <svg
-        width="24"
-        height="24"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         strokeWidth="1.7"
@@ -136,11 +135,11 @@ export function Dock({ variant }: { variant: Variant }) {
   return (
     <nav
       aria-label="Pages"
-      className={`pointer-events-none fixed inset-x-0 bottom-4 z-40 flex justify-center px-4 transition-transform duration-300 motion-reduce:transition-none ${
+      className={`pointer-events-none fixed inset-x-0 bottom-3 z-40 flex justify-center px-4 transition-transform duration-300 motion-reduce:transition-none ${
         hidden ? 'translate-y-[160%] focus-within:translate-y-0' : ''
       }`}
     >
-      <ul className="pointer-events-auto flex items-start gap-4 rounded-3xl bg-white/90 px-4 py-3 shadow-[0_8px_24px_rgba(74,59,63,0.14)] backdrop-blur sm:gap-8 sm:px-7">
+      <ul className="pointer-events-auto flex items-start gap-3 rounded-3xl bg-white/90 px-4 py-2.5 shadow-[0_8px_24px_rgba(74,59,63,0.14)] backdrop-blur sm:gap-6 sm:px-6">
         {items.map((item) => {
           const active = isActive(pathname, item.href)
           return (
@@ -148,7 +147,7 @@ export function Dock({ variant }: { variant: Variant }) {
               <Link
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
-                className="group flex flex-col items-center gap-1.5 rounded-lg outline-offset-4 focus-visible:outline-2 focus-visible:outline-dashed focus-visible:outline-accent"
+                className="group flex flex-col items-center gap-1 rounded-lg outline-offset-4 focus-visible:outline-2 focus-visible:outline-dashed focus-visible:outline-accent"
               >
                 {variant === 'envelope' ? (
                   <span className="block transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transition-none">
@@ -158,7 +157,7 @@ export function Dock({ variant }: { variant: Variant }) {
                   <StickerGlyph tone={item.tone} icon={item.icon} active={active} />
                 )}
                 <span
-                  className={`rounded-md px-2 py-0.5 font-mono text-xs tracking-wide text-ink ${
+                  className={`rounded-md px-1.5 py-0.5 font-mono text-[11px] tracking-wide text-ink ${
                     active ? tones[item.tone].label : ''
                   }`}
                 >
