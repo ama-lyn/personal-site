@@ -98,3 +98,21 @@ body {
     }
   }
 }
+/* Home: airmail envelope border and ruled letter paper */
+@utility airmail-border {
+  background-image: repeating-linear-gradient(
+    135deg,
+    #e5667f 0 14px,
+    #fff 14px 28px,
+    #5b7fd1 28px 42px,
+    #fff 42px 56px
+  );
+}
+
+@utility ruled-paper {
+  background-color: #fffefb;
+  background-image: repeating-linear-gradient(
+    transparent 0 35px,
+    rgba(201, 90, 126, 0.16) 35px 36px
+  );
+}

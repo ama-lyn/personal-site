@@ -1,14 +1,10 @@
 import { PageShell } from './components/layout/PageShell'
-import { AboutMe } from './components/about/About'
-import { FeaturedProjects } from './components/projects/FeaturedProjects'
-import { ContactCard } from './components/contact/ContactCard'
+import { HomeLetter } from './components/home/HomeLetter'
 
 export default function Home() {
   return (
     <PageShell nav="envelope">
-      <AboutMe />
-      <FeaturedProjects />
-      <ContactCard />
+      <HomeLetter />
     </PageShell>
   )
 }
