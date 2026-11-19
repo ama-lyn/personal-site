@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Navbar } from '../../components/navbar/Navbar';
+import { PageShell } from '../../components/layout/PageShell';
 import { Polaroid } from '../../components/about/Polaroid';
 import { ReadingProgress } from '../../components/journal/ReadingProgress';
 import { StickerReactions } from '../../components/journal/StickerReactions';
@@ -24,10 +24,9 @@ export default async function PostPage({
   const dateLong = post.dateLong ?? `${post.month} ${post.day}, ${post.year}`;
 
   return (
-    <div className="relative mx-auto w-full max-w-[1280px] px-6 md:px-8 pt-6 md:pt-8 pb-16">
+    <PageShell nav={false}>
       <ReadingProgress />
-      <Navbar />
-      <main className="mx-auto mt-8 w-full max-w-[1080px]">
+      <div className="w-full">
         <Link
           href="/blog"
           className="inline-block font-caveat text-lg text-muted transition-colors hover:text-pink-deep"
@@ -145,8 +144,8 @@ export default async function PostPage({
         <p className="mt-16 text-center font-caveat text-2xl italic text-ink">
           thanks for stopping by ♡
         </p>
-      </main>
-    </div>
+      </div>
+    </PageShell>
   );
 }
 

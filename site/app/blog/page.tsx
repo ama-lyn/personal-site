@@ -1,17 +1,16 @@
-import { Navbar } from '../components/navbar/Navbar';
+import { PageShell } from '../components/layout/PageShell';
 import { JournalCard } from '../components/journal/JournalCard';
 import { posts } from '../components/journal/posts';
 
 export default function BlogPage() {
   return (
-    <div className="relative mx-auto w-full max-w-[1280px] px-6 md:px-8 pt-6 md:pt-8 pb-16">
-      <Navbar />
-      <main className="mx-auto mt-10 w-full max-w-[720px]">
+    <PageShell nav="sticker">
+      <div className="mx-auto w-full max-w-reading">
         <h1 className="text-center font-caveat text-4xl text-ink">
           my journal <span aria-hidden="true">✧</span>
         </h1>
 
-        <div className="mt-10 flex flex-col gap-10">
+        <div className="mt-heading flex flex-col gap-10">
           {posts.map((post) => (
             <JournalCard key={post.slug} post={post} />
           ))}
@@ -29,7 +28,7 @@ export default function BlogPage() {
         <p className="mt-16 text-center font-caveat text-lg italic text-muted">
           thanks for reading my thoughts ♡
         </p>
-      </main>
-    </div>
+      </div>
+    </PageShell>
   );
 }

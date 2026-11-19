@@ -76,7 +76,7 @@ const entries: Entry[] = [
 
 export function ScrapbookTimeline() {
   return (
-    <section className="relative mt-10 w-full">
+    <section className="relative w-full">
       {/* scatter set — page gutters around the timeline, NOT in the flow; desktop only */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden lg:block">
         <div className="absolute left-6 top-[240px] w-[150px]" style={{ transform: 'rotate(-9deg)' }}>

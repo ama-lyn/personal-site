@@ -16,10 +16,24 @@
   --color-tape-lavender: #e0e7ff;
   --color-toolbelt-fill: #FFFDF9;
 
-  /* Fonts */
-  --font-caveat: var(--font-caveat), cursive;
-  --font-nunito: var(--font-nunito), sans-serif;
-  --font-serif-journal: var(--font-serif-journal), Georgia, serif;
+  /* New palette tokens (the old ones above stay until the pages using them are rebuilt) */
+  --color-yellow: #FBE3A6;
+  --color-accent: #C95A7E;      /* text accent: 4.5:1 on white, 3:1+ on cream at large sizes */
+  --color-accent-deep: #B2456A;
+  --color-ink-soft: #6A5A57;    /* secondary text, passes AA on cream */
+  --color-pink-soft: #FDF1F4;
+  --color-lavender-soft: #F4F0FC;
+  --color-mint-soft: #EDF8F3;
+  --color-yellow-soft: #FEF8E4;
+
+  /* Layout widths: only two */
+  --container-page: 72rem;      /* 1152px */
+  --container-reading: 45rem;   /* 720px */
+
+  /* Vertical rhythm */
+  --spacing-section: 6rem;      /* 96px between sections (md and up) */
+  --spacing-section-sm: 4rem;   /* 64px between sections (mobile) */
+  --spacing-heading: 2rem;      /* 32px heading to content */
 
   /* Radius */
   --radius-note: 4px; /* Sticky notes, tags */
@@ -33,10 +47,21 @@
   --shadow-polaroid: 0 2px 8px rgba(74, 59, 63, 0.08);
 }
 
+/* Fonts: next/font defines --nf-* on <html>; "inline" lets Tailwind read them directly
+   (see node_modules/next/dist/docs, "With Tailwind CSS"). */
+@theme inline {
+  --font-sans: var(--nf-nunito), system-ui, sans-serif;
+  --font-nunito: var(--nf-nunito), system-ui, sans-serif;
+  --font-caveat: var(--nf-caveat), cursive;
+  --font-serif-journal: var(--nf-fraunces), Georgia, serif;
+  --font-display: var(--nf-fraunces), Georgia, serif;
+  --font-mono: var(--nf-mono), ui-monospace, monospace;
+}
+
 body {
   background: var(--color-cream);
   color: var(--color-ink);
-  font-family: var(--font-nunito);
+  font-family: var(--nf-nunito), system-ui, sans-serif;
 }
 
 @keyframes sticker-pop-float {

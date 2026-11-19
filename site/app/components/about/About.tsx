@@ -5,7 +5,7 @@ import { Toolbelt } from './Toolbelt';
 
 export function AboutMe() {
   return (
-    <section className="mt-10 w-full">
+    <section className="w-full">
       <div className="max-w-[520px]">
         <div className="flex items-center gap-2">
           <h1 className="font-caveat text-5xl leading-none">hii, i&rsquo;m gwen</h1>
