@@ -17,7 +17,7 @@ export function PageShell({ children, nav = 'sticker', footer }: PageShellProps)
   return (
     <div
       className={`relative mx-auto flex min-h-screen w-full max-w-page flex-col px-6 pt-6 md:px-8 md:pt-8 ${
-        nav ? 'pb-28 md:pb-32' : 'pb-8 md:pb-12'
+        nav ? 'pb-24 md:pb-28' : 'pb-8 md:pb-12'
       }`}
     >
       {nav && <SiteHeader />}
