@@ -3,18 +3,17 @@
 import Image from 'next/image'
 import { useRef, useState, useSyncExternalStore } from 'react'
 
-type Which = 'avatar' | 'ice'
+/*
+ * Two photos, like the inspiration:
+ *  - a tall portrait in front (tilted right) with the paperclip on its top-right
+ *  - a shorter photo behind it, mostly hidden, poking out on the right
+ * Hovering the back photo brings it to the front and moves the clip onto it.
+ * Moving the mouse away puts everything back. Sizes and positions never change,
+ * only the stacking order, the clip and a slight tilt.
+ * Touch screens: tap the back photo to bring it forward, tap again (or the other photo) to reset.
+ */
 
-const photos: Record<Which, { src: string; alt: string }> = {
-  avatar: { src: '/avatar.jpg', alt: 'Gwen, smiling at the camera' },
-  ice: { src: '/ice_cream.jpg', alt: 'A cup of pistachio ice cream' },
-}
-
-// One photo is big and in front, the other is small and behind. Hovering (or tapping)
-// the one behind swaps them. Hovering the one in front only tilts it.
-const FRONT = 'top-[9%] left-0 z-20 h-[82%] w-[68%] -rotate-[5deg] hover:-rotate-[7deg]'
-const BACK = 'top-0 left-[38%] z-10 h-[64%] w-[52%] rotate-[5deg]'
-const COOLDOWN_MS = 700
+const SOUND_COOLDOWN_MS = 400
 
 /* ---- "sound on/off", remembered in localStorage ---- */
 const MUTE_KEY = 'gwen-sound-muted'
@@ -44,14 +43,48 @@ function writeMuted(value: boolean) {
   listeners.forEach((callback) => callback())
 }
 
+function Paperclip({ visible, className }: { visible: boolean; className: string }) {
+  return (
+    <svg
+      width="52"
+      height="140"
+      viewBox="0 0 60 160"
+      fill="none"
+      aria-hidden="true"
+      className={`pointer-events-none absolute -top-[62px] z-30 -translate-x-1/2 transition-[opacity,translate] duration-300 motion-reduce:transition-none ${
+        visible ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'
+      } ${className}`}
+    >
+      <path
+        d="M24 52V118a13 13 0 0 0 26 0V58a8 8 0 0 0-16 0V108"
+        stroke="#9AA0A6"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <polygon
+        points="35,12 38.8,22.7 50.2,23.1 41.2,30 44.4,40.9 35,34.5 25.6,40.9 28.8,30 19.8,23.1 31.2,22.7"
+        fill="#C9CED3"
+        stroke="#8E959C"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export function PhotoSwap() {
-  const [front, setFront] = useState<Which>('avatar')
+  const [swapped, setSwapped] = useState(false) // true = the back photo is in front
   const muted = useSyncExternalStore(subscribe, readMuted, () => false)
   const audio = useRef<HTMLAudioElement | null>(null)
-  const lastSwap = useRef(0)
+  const lastSound = useRef(0)
+  const lastPointer = useRef('mouse')
 
   function playWhoosh() {
-    if (muted || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const now = Date.now()
+    if (muted || now - lastSound.current < SOUND_COOLDOWN_MS) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    lastSound.current = now
     audio.current ??= new Audio('/sounds/whoosh.mp3')
     audio.current.volume = 0.35
     audio.current.currentTime = 0
@@ -59,66 +92,87 @@ export function PhotoSwap() {
     audio.current.play().catch(() => {})
   }
 
-  function swap() {
-    const now = Date.now()
-    if (now - lastSwap.current < COOLDOWN_MS) return // stops flip-flopping under the cursor
-    lastSwap.current = now
-    setFront((current) => (current === 'avatar' ? 'ice' : 'avatar'))
-    playWhoosh()
+  function bringBackPhotoForward() {
+    if (!swapped) playWhoosh()
+    setSwapped(true)
   }
 
-  return (
-    <div className="mx-auto w-full max-w-[560px]">
-      <div className="relative aspect-[6/6.4] w-full">
-        {(Object.keys(photos) as Which[]).map((key) => {
-          const isFront = front === key
-          return (
-            <div
-              key={key}
-              className={`absolute transition-all duration-500 ease-out motion-reduce:transition-none ${
-                isFront ? FRONT : BACK
-              }`}
-            >
-              <button
-                type="button"
-                disabled={isFront}
-                aria-label={isFront ? undefined : `Bring this photo to the front: ${photos[key].alt}`}
-                onPointerEnter={(event) => {
-                  if (!isFront && event.pointerType === 'mouse') swap()
-                }}
-                onClick={() => {
-                  if (!isFront) swap()
-                }}
-                className="relative block h-full w-full cursor-pointer overflow-hidden rounded shadow-[0_14px_30px_rgba(74,59,63,0.28)] disabled:cursor-default"
-              >
-                <Image
-                  src={photos[key].src}
-                  alt={photos[key].alt}
-                  fill
-                  sizes="(min-width: 1024px) 380px, 70vw"
-                  preload={key === 'avatar'}
-                  className="object-cover"
-                />
-              </button>
+  const portraitFront = !swapped
 
-              {/* paperclip on whichever photo is in front */}
-              <svg
-                width="34"
-                height="76"
-                viewBox="0 0 34 76"
-                fill="none"
-                strokeWidth="3"
-                strokeLinecap="round"
-                aria-hidden="true"
-                className={`pointer-events-none absolute -top-8 left-12 stroke-[#9AA0A6] transition-opacity duration-300 ${
-                  isFront ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                <path d="M12 60V16a9 9 0 0 1 18 0v46a14 14 0 0 1-28 0V22" />
-              </svg>
-            </div>
-          )
-        })}
+  return (
+    <div className="mx-auto w-full max-w-[600px]">
+      <div className="relative aspect-[620/600] w-full">
+        {/* Tall portrait: in front by default */}
+        <div
+          onClick={() => swapped && setSwapped(false)}
+          className={`absolute top-[2%] left-0 w-[74%] rotate-[8deg] transition-[rotate] duration-500 ease-out motion-reduce:transition-none ${
+            portraitFront ? 'z-20 hover:rotate-[10deg]' : 'z-10'
+          }`}
+        >
+          <div
+            className={`relative aspect-[4/5] w-full overflow-hidden rounded-[2px] transition-shadow duration-500 ${
+              portraitFront
+                ? 'shadow-[0_18px_40px_rgba(74,59,63,0.3)]'
+                : 'shadow-[0_10px_24px_rgba(74,59,63,0.2)]'
+            }`}
+          >
+            <Image
+              src="/avatar.jpg"
+              alt="Gwen, smiling at the camera"
+              fill
+              sizes="(min-width: 1024px) 420px, 80vw"
+              preload
+              className="object-cover"
+            />
+          </div>
+          <Paperclip visible={portraitFront} className="left-[86%]" />
+        </div>
+
+        {/* Shorter photo: behind by default, the one you hover */}
+        <div
+          className={`absolute top-[9%] right-0 w-[71%] transition-[rotate] duration-500 ease-out motion-reduce:transition-none ${
+            swapped ? 'z-20 rotate-[1.5deg]' : 'z-10 -rotate-[2deg]'
+          }`}
+        >
+          <button
+            type="button"
+            aria-pressed={swapped}
+            aria-label="Bring the second photo to the front"
+            onPointerDown={(event) => {
+              lastPointer.current = event.pointerType
+            }}
+            onPointerEnter={(event) => {
+              if (event.pointerType === 'mouse') bringBackPhotoForward()
+            }}
+            onPointerLeave={(event) => {
+              if (event.pointerType === 'mouse') setSwapped(false)
+            }}
+            onClick={() => {
+              // mouse users already got the swap from hovering; touch users tap to toggle
+              if (lastPointer.current === 'mouse') return
+              if (swapped) setSwapped(false)
+              else bringBackPhotoForward()
+            }}
+            onFocus={(event) => {
+              if (event.currentTarget.matches(':focus-visible')) bringBackPhotoForward()
+            }}
+            onBlur={() => setSwapped(false)}
+            className={`relative block aspect-[44/43] w-full cursor-pointer overflow-hidden rounded-[2px] transition-shadow duration-500 focus-visible:outline-2 focus-visible:outline-dashed focus-visible:outline-offset-4 focus-visible:outline-accent ${
+              swapped
+                ? 'shadow-[0_18px_40px_rgba(74,59,63,0.3)]'
+                : 'shadow-[0_10px_24px_rgba(74,59,63,0.2)]'
+            }`}
+          >
+            <Image
+              src="/ice_cream.jpg"
+              alt="A cup of pistachio ice cream"
+              fill
+              sizes="(min-width: 1024px) 400px, 75vw"
+              className="object-cover"
+            />
+          </button>
+          <Paperclip visible={swapped} className="left-[54%]" />
+        </div>
       </div>
 
       <button
