@@ -46,13 +46,11 @@ const STICKERS = [
 ] as const;
 
 export function StickerReactions() {
-  const [counts, setCounts] = useState<Record<string, number>>({});
   const [floaters, setFloaters] = useState<Floater[]>([]);
   const [bump, setBump] = useState<string | null>(null);
   const idRef = useRef(0);
 
   const react = useCallback((shape: string, fill: string) => {
-    setCounts((c) => ({ ...c, [shape]: (c[shape] ?? 0) + 1 }));
     const id = ++idRef.current;
     const floater: Floater = {
       id,
@@ -75,7 +73,7 @@ export function StickerReactions() {
 
   return (
     <div className="relative overflow-visible rounded-2xl border border-dashed border-pink-deep/40 bg-paper px-6 py-6 text-center">
-      <p className="font-caveat text-xl italic text-muted">
+      <p className="font-caveat text-xl italic text-ink-soft">
         leave a sticker if you enjoyed this...
       </p>
       <div className="relative mt-4 flex flex-wrap items-center justify-center gap-4">

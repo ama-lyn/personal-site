@@ -1,11 +1,9 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { posts } from './posts';
+import { TurnLink } from './PageTurn';
+import { getAdjacentPosts } from './posts';
 
 export function ArticleFooter({ slug }: { slug: string }) {
-  const index = posts.findIndex((p) => p.slug === slug);
-  const prev = index > 0 ? posts[index - 1] : null;
-  const next = index >= 0 && index < posts.length - 1 ? posts[index + 1] : null;
+  const { prev, next } = getAdjacentPosts(slug);
 
   return (
     <>
@@ -17,38 +15,34 @@ export function ArticleFooter({ slug }: { slug: string }) {
           <p className="font-caveat text-xl leading-tight text-ink">
             penned with love by,
             <br />
-            <span className="font-bold text-pink-deep">Gwen</span>
+            <span className="font-bold text-accent">Gwen</span>
           </p>
         </div>
       </div>
 
       <div className="mt-8 flex items-start justify-between gap-6">
         <div className="min-w-0">
-          {prev ? (
-            <Link href={`/blog/${prev.slug}`} className="group block">
-              <span className="font-caveat text-lg italic text-muted">
+          {prev && (
+            <TurnLink href={`/blog/${prev.slug}`} direction="prev" className="group block">
+              <span className="font-mono text-xs tracking-[0.1em] text-ink-soft uppercase">
                 &larr; previous entry
               </span>
-              <span className="block truncate font-nunito text-[15px] font-bold text-ink group-hover:text-pink-deep">
+              <span className="block truncate text-[15px] font-bold text-ink group-hover:text-accent-deep">
                 {prev.title}
               </span>
-            </Link>
-          ) : (
-            <span />
+            </TurnLink>
           )}
         </div>
         <div className="min-w-0 text-right">
-          {next ? (
-            <Link href={`/blog/${next.slug}`} className="group block">
-              <span className="font-caveat text-lg italic text-muted">
+          {next && (
+            <TurnLink href={`/blog/${next.slug}`} direction="next" className="group block">
+              <span className="font-mono text-xs tracking-[0.1em] text-ink-soft uppercase">
                 next entry &rarr;
               </span>
-              <span className="block truncate font-nunito text-[15px] font-bold text-ink group-hover:text-pink-deep">
+              <span className="block truncate text-[15px] font-bold text-ink group-hover:text-accent-deep">
                 {next.title}
               </span>
-            </Link>
-          ) : (
-            <span />
+            </TurnLink>
           )}
         </div>
       </div>

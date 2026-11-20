@@ -211,6 +211,15 @@ export const posts: Post[] = [
   },
 ];
 
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+function timestamp(post: Post) {
+  return new Date(Number(post.year), MONTHS.indexOf(post.month.toUpperCase()), Number(post.day)).getTime();
+}
+
+// Newest first, whatever order the posts are written in above.
+posts.sort((a, b) => timestamp(b) - timestamp(a));
+
 export function getPost(slug: string) {
   return posts.find((p) => p.slug === slug);
 }
@@ -218,7 +227,8 @@ export function getPost(slug: string) {
 export function getAdjacentPosts(slug: string) {
   const index = posts.findIndex((p) => p.slug === slug);
   return {
-    prev: index > 0 ? posts[index - 1] : null,
-    next: index >= 0 && index < posts.length - 1 ? posts[index + 1] : null,
+    // posts are newest first: "previous" is the older entry, "next" is the newer one
+    prev: index >= 0 && index < posts.length - 1 ? posts[index + 1] : null,
+    next: index > 0 ? posts[index - 1] : null,
   };
 }
