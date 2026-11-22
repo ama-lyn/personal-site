@@ -3,7 +3,11 @@ import type { Quest } from './quests'
 
 export function QuestCard({ quest, onOpen }: { quest: Quest; onOpen: (slug: string) => void }) {
   return (
-    <article className="group relative mb-8 break-inside-avoid transition-transform duration-300 hover:-translate-y-1 motion-reduce:transition-none">
+    <article
+      className={`group relative mb-8 break-inside-avoid transition-transform duration-300 hover:-translate-y-1 motion-reduce:transition-none ${
+        quest.wide ? 'md:[column-span:all] lg:[column-span:none]' : ''
+      }`}
+    >
       <div className="overflow-hidden rounded-[18px] bg-white shadow-[0_8px_24px_rgba(74,59,63,0.1)]">
         {/* window title bar: only the quests have these */}
         <div className="relative flex h-8 items-center gap-1.5 bg-[#F1EEEA] px-3.5" aria-hidden="true">
@@ -15,8 +19,8 @@ export function QuestCard({ quest, onOpen }: { quest: Quest; onOpen: (slug: stri
           </span>
         </div>
 
-        <div className={`relative ${quest.preview.aspect}`}>
-          <QuestPreview quest={quest} sizes="(min-width: 1024px) 360px, (min-width: 768px) 45vw, 100vw" />
+        <div className={`relative ${quest.wide ? 'aspect-[16/10]' : quest.preview.aspect}`}>
+          <QuestPreview quest={quest} sizes={quest.wide ? '(min-width: 1024px) 760px, 100vw' : '(min-width: 1024px) 360px, (min-width: 768px) 45vw, 100vw'} />
         </div>
       </div>
 

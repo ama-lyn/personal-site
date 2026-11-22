@@ -24,6 +24,7 @@ export type Quest = {
   meta: { label: string; value: string }[]
   description: string[] // one string per paragraph
   projectSlug?: string // links to /work/<slug>
+  wide?: boolean // takes two of the three columns, like a featured window (only the first one is used)
 }
 
 export const quests: Quest[] = [
@@ -82,6 +83,7 @@ export const quests: Quest[] = [
   },
   {
     slug: 'hackathon-weekend',
+    wide: true,
     title: 'Hackathon weekend',
     filename: 'hackathon-recap.md',
     kind: 'tech',
