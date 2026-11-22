@@ -13,9 +13,11 @@ type PageShellProps = {
   nav?: 'envelope' | 'sticker' | 'header' | false
   /** defaults to following `nav` */
   footer?: boolean
+  /** less space between the header and the content (used by the About page) */
+  tight?: boolean
 }
 
-export function PageShell({ children, nav = 'sticker', footer }: PageShellProps) {
+export function PageShell({ children, nav = 'sticker', footer, tight }: PageShellProps) {
   const showFooter = footer ?? nav !== false
   const showDock = nav === 'envelope' || nav === 'sticker'
 
@@ -26,7 +28,7 @@ export function PageShell({ children, nav = 'sticker', footer }: PageShellProps)
       }`}
     >
       {nav && <SiteHeader />}
-      <main className={`flex-1 ${nav ? 'mt-12 md:mt-16' : ''}`}>{children}</main>
+      <main className={`flex-1 ${nav ? (tight ? 'mt-6 md:mt-9' : 'mt-12 md:mt-16') : ''}`}>{children}</main>
       {showFooter && <Footer />}
       {(nav === 'envelope' || nav === 'sticker') && <Dock variant={nav} />}
     </div>

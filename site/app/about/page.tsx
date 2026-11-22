@@ -4,7 +4,7 @@ import { ScrapbookTimeline } from '../components/scrapbook/ScrapbookTimeline'
 
 export default function AboutPage() {
   return (
-    <PageShell nav="sticker">
+    <PageShell nav="sticker" tight>
       <About />
       <div className="mt-section-sm md:mt-section">
         <ScrapbookTimeline />

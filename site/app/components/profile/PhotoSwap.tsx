@@ -98,7 +98,7 @@ export function PhotoSwap() {
   const portraitFront = !swapped
 
   return (
-    <div className="mx-auto w-full max-w-[600px]">
+    <div className="mx-auto w-full max-w-[520px]">
       <div className="relative aspect-[620/600] w-full">
         {/* Tall portrait: in front by default */}
         <div
