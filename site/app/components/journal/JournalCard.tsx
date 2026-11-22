@@ -10,7 +10,7 @@ const stampMap = {
 export function JournalCard({ post }: { post: Post }) {
   return (
     <article
-      className="group relative rotate-(--tilt) rounded-[4px] bg-paper p-8 pt-10 shadow-soft transition-[rotate,translate] duration-300 hover:-translate-y-1 hover:rotate-0 motion-reduce:transition-none md:p-10 md:pt-10"
+      className="group relative rotate-(--tilt) rounded-[4px] bg-paper p-6 pt-9 shadow-soft transition-[rotate,translate] duration-300 hover:-translate-y-1 hover:rotate-0 motion-reduce:transition-none md:p-10 md:pt-10"
       style={{ '--tilt': post.rotation } as React.CSSProperties}
     >
       {/* perforated tear-off edge along the top */}
@@ -28,7 +28,7 @@ export function JournalCard({ post }: { post: Post }) {
       {/* circular date stamp */}
       <div
         aria-hidden="true"
-        className={`absolute right-6 top-5 grid size-20 rotate-6 place-items-center rounded-full border-2 ${stampMap[post.stamp]}`}
+        className={`absolute right-5 top-5 grid size-[68px] md:right-6 md:size-20 rotate-6 place-items-center rounded-full border-2 ${stampMap[post.stamp]}`}
       >
         <span className="absolute inset-1 rounded-full border border-current opacity-40" />
         <span className="flex flex-col items-center font-mono leading-none">
@@ -38,13 +38,13 @@ export function JournalCard({ post }: { post: Post }) {
         </span>
       </div>
 
-      <h2 className="flex items-start gap-2 pr-24 font-display text-[26px] leading-[1.15] text-ink italic md:text-[30px]">
-        <span aria-hidden="true" className="text-2xl leading-snug not-italic">
+      <h2 className="flex items-start gap-2 pr-20 font-display text-[21px] leading-[1.2] text-ink italic md:pr-24 md:text-[30px]">
+        <span aria-hidden="true" className="text-xl leading-snug not-italic md:text-2xl">
           {post.emoji}
         </span>
         {post.title}
       </h2>
-      <p className="mt-4 text-[17px] leading-[1.7] text-ink-soft">{post.excerpt}</p>
+      <p className="mt-4 text-base leading-[1.7] text-ink-soft md:text-[17px]">{post.excerpt}</p>
       {/* the whole card is clickable through this link */}
       <Link
         href={`/blog/${post.slug}`}

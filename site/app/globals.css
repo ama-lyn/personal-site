@@ -117,18 +117,82 @@ body {
   );
 }
 
-/* Journal: the page turn between entries (see components/journal/PageTurn.tsx) */
-.turn-card { transform-origin: left center; backface-visibility: hidden; }
-.turn-card[data-direction='prev'] { transform-origin: right center; }
-.turn-out[data-direction='next'] { animation: turn-out-next 380ms cubic-bezier(0.55, 0, 0.9, 0.5) forwards; }
-.turn-out[data-direction='prev'] { animation: turn-out-prev 380ms cubic-bezier(0.55, 0, 0.9, 0.5) forwards; }
-.turn-in[data-direction='next'] { animation: turn-in-next 480ms cubic-bezier(0.1, 0.6, 0.2, 1) both; }
-.turn-in[data-direction='prev'] { animation: turn-in-prev 480ms cubic-bezier(0.1, 0.6, 0.2, 1) both; }
-@keyframes turn-out-next { to { transform: perspective(1800px) rotateY(-100deg); } }
-@keyframes turn-out-prev { to { transform: perspective(1800px) rotateY(100deg); } }
-@keyframes turn-in-next { from { transform: perspective(1800px) rotateY(100deg); } }
-@keyframes turn-in-prev { from { transform: perspective(1800px) rotateY(-100deg); } }
-html.turn-lock { overflow-x: clip; }
+/*
+ * Journal: the page turn between entries (see components/journal/PageTurn.tsx).
+ * React's <ViewTransition> + Next's Link transitionTypes drive this. The old entry turns away
+ * like a sheet of paper while the next entry is already waiting underneath, so there is no
+ * blank gap. Only "previous" / "next" links animate; the back button and plain links do not.
+ */
+::view-transition { pointer-events: none; }
+
+/* the rest of the page just swaps, no crossfade ghosting */
+::view-transition-old(root) { animation: none; display: none; }
+::view-transition-new(root) { animation: none; }
+
+::view-transition-group(.page-out-next),
+::view-transition-group(.page-out-prev) { z-index: 2; }
+::view-transition-group(.page-in) { z-index: 1; }
+
+::view-transition-old(.page-out-next),
+::view-transition-old(.page-out-prev) {
+  mix-blend-mode: normal;
+  backface-visibility: hidden;
+  animation-duration: 950ms;
+  animation-fill-mode: both;
+}
+/* --turn-y keeps the vanishing point at the middle of the screen, however far down the page was scrolled */
+::view-transition-old(.page-out-next) { transform-origin: 0 var(--turn-y, 50%); animation-name: page-turn-next; }
+::view-transition-old(.page-out-prev) { transform-origin: 100% var(--turn-y, 50%); animation-name: page-turn-prev; }
+
+::view-transition-new(.page-in) {
+  mix-blend-mode: normal;
+  animation: page-reveal 950ms cubic-bezier(0.3, 0.1, 0.4, 1) both;
+}
+
+/* lift a little, swing over, then settle edge-on: slow start, quick middle, soft end */
+@keyframes page-turn-next {
+  0% {
+    transform: perspective(2200px) rotateY(0deg) skewY(0deg);
+    filter: drop-shadow(0 0 0 rgb(74 59 63 / 0)) brightness(1);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.45, 1);
+  }
+  35% {
+    transform: perspective(2200px) rotateY(-26deg) skewY(-1deg);
+    filter: drop-shadow(16px 12px 22px rgb(74 59 63 / 0.2)) brightness(0.98);
+    animation-timing-function: cubic-bezier(0.35, 0.1, 0.5, 1);
+  }
+  100% {
+    transform: perspective(2200px) rotateY(-100deg) skewY(0deg);
+    filter: drop-shadow(30px 10px 30px rgb(74 59 63 / 0)) brightness(0.86);
+  }
+}
+@keyframes page-turn-prev {
+  0% {
+    transform: perspective(2200px) rotateY(0deg) skewY(0deg);
+    filter: drop-shadow(0 0 0 rgb(74 59 63 / 0)) brightness(1);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.45, 1);
+  }
+  35% {
+    transform: perspective(2200px) rotateY(26deg) skewY(1deg);
+    filter: drop-shadow(-16px 12px 22px rgb(74 59 63 / 0.2)) brightness(0.98);
+    animation-timing-function: cubic-bezier(0.35, 0.1, 0.5, 1);
+  }
+  100% {
+    transform: perspective(2200px) rotateY(100deg) skewY(0deg);
+    filter: drop-shadow(-30px 10px 30px rgb(74 59 63 / 0)) brightness(0.86);
+  }
+}
+/* the next entry rises into place as the shadow of the turning page passes off it */
+@keyframes page-reveal {
+  from { transform: scale(0.985); filter: brightness(0.93); }
+  to { transform: scale(1); filter: brightness(1); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .turn-out, .turn-in { animation: none !important; }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }

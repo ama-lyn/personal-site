@@ -60,7 +60,7 @@ export default async function PostPage({
 
         {/* keyed by slug so each entry gets its own fresh page (and its own page turn) */}
         <PageTurn key={post.slug}>
-          <article className="relative mt-6 rounded-[6px] bg-paper px-7 py-10 pt-16 shadow-soft md:px-14 md:py-12 md:pt-[72px]">
+          <article className="relative mt-6 rounded-[6px] bg-paper px-6 py-9 pt-14 shadow-soft md:px-14 md:py-12 md:pt-[72px]">
             <span
               aria-hidden="true"
               className="absolute -top-3 left-1/2 h-7 w-28 -translate-x-1/2 rotate-[-2deg] rounded-[2px] bg-lavender/70 shadow-card"
@@ -68,15 +68,15 @@ export default async function PostPage({
 
             <div className="grid items-start gap-8 md:grid-cols-[1fr_220px]">
               <div>
-                <p className="font-mono text-sm tracking-[0.1em] text-accent-deep uppercase">
+                <p className="font-mono text-xs tracking-[0.1em] text-accent-deep uppercase md:text-sm">
                   {dateLong}
                   {post.readMinutes ? ` · ${post.readMinutes} min read` : ''}
                 </p>
-                <h1 className="mt-3 font-display text-4xl leading-[1.1] text-ink italic md:text-[52px]">
+                <h1 className="mt-3 font-display text-[28px] leading-[1.15] text-ink italic md:text-[52px]">
                   {post.title}
                 </h1>
                 {post.subtitle && (
-                  <p className="mt-4 text-lg leading-relaxed text-ink-soft italic">{post.subtitle}</p>
+                  <p className="mt-4 text-base leading-relaxed text-ink-soft italic md:text-lg">{post.subtitle}</p>
                 )}
               </div>
               <div className="mx-auto w-full max-w-[220px]">
@@ -90,7 +90,7 @@ export default async function PostPage({
 
             <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_220px]">
               <div className="min-w-0">
-                <div className="flex flex-col gap-5 text-[17px] leading-[1.75] text-ink">
+                <div className="flex flex-col gap-5 text-base leading-[1.75] text-ink md:text-[17px]">
                   {post.body.map((para, i) => (
                     <p key={i}>{para}</p>
                   ))}
@@ -98,15 +98,15 @@ export default async function PostPage({
                 {post.sections?.map((section, si) => (
                   <div key={si} className="mt-8">
                     {section.heading && (
-                      <h2 className="font-display text-3xl text-ink italic">{section.heading}</h2>
+                      <h2 className="font-display text-2xl text-ink italic md:text-3xl">{section.heading}</h2>
                     )}
-                    <div className="mt-4 flex flex-col gap-5 text-[17px] leading-[1.75] text-ink">
+                    <div className="mt-4 flex flex-col gap-5 text-base leading-[1.75] text-ink md:text-[17px]">
                       {section.paras.map((para, pi) => (
                         <p key={pi}>{para}</p>
                       ))}
                     </div>
                     {section.pullQuote && (
-                      <blockquote className="mt-6 border-l-4 border-pink-deep/60 pl-6 font-display text-2xl leading-snug text-ink-soft italic">
+                      <blockquote className="mt-6 border-l-4 border-pink-deep/60 pl-5 font-display text-xl leading-snug text-ink-soft italic md:pl-6 md:text-2xl">
                         &ldquo;{section.pullQuote}&rdquo;
                       </blockquote>
                     )}
@@ -148,7 +148,7 @@ export default async function PostPage({
           </article>
         </PageTurn>
 
-        <p className="mt-16 text-center font-caveat text-2xl text-ink italic">thanks for stopping by ♡</p>
+        <p className="mt-16 text-center font-caveat text-xl text-ink italic md:text-2xl">thanks for stopping by ♡</p>
       </div>
     </PageShell>
   );
