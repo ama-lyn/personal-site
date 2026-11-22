@@ -7,9 +7,10 @@ import { useRef, useState, useSyncExternalStore } from 'react'
  * Two photos, like the inspiration:
  *  - a tall portrait in front (tilted right) with the paperclip on its top-right
  *  - a shorter photo behind it, mostly hidden, poking out on the right
- * Hovering the back photo brings it to the front and moves the clip onto it.
+ * Hovering the back photo brings it to the front. The paperclip stays exactly where it is
+ * and keeps holding the stack together while the photos swap underneath it.
  * Moving the mouse away puts everything back. Sizes and positions never change,
- * only the stacking order, the clip and a slight tilt.
+ * only the stacking order and a slight tilt.
  * Touch screens: tap the back photo to bring it forward, tap again (or the other photo) to reset.
  */
 
@@ -43,17 +44,14 @@ function writeMuted(value: boolean) {
   listeners.forEach((callback) => callback())
 }
 
-function Paperclip({ visible, className }: { visible: boolean; className: string }) {
+/* One fixed clip: it never moves or fades, whichever photo is in front. */
+function Paperclip() {
   return (
     <svg
-      width="52"
-      height="140"
       viewBox="0 0 60 160"
       fill="none"
       aria-hidden="true"
-      className={`pointer-events-none absolute -top-[62px] z-30 -translate-x-1/2 transition-[opacity,translate] duration-300 motion-reduce:transition-none ${
-        visible ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'
-      } ${className}`}
+      className="pointer-events-none absolute top-[-4.5%] left-[70%] z-30 h-auto w-[8.7%] -translate-x-1/2 rotate-[5deg]"
     >
       <path
         d="M24 52V118a13 13 0 0 0 26 0V58a8 8 0 0 0-16 0V108"
@@ -125,7 +123,6 @@ export function PhotoSwap() {
               className="object-cover"
             />
           </div>
-          <Paperclip visible={portraitFront} className="left-[86%]" />
         </div>
 
         {/* Shorter photo: behind by default, the one you hover */}
@@ -171,8 +168,9 @@ export function PhotoSwap() {
               className="object-cover"
             />
           </button>
-          <Paperclip visible={swapped} className="left-[54%]" />
         </div>
+
+        <Paperclip />
       </div>
 
       <button

@@ -24,7 +24,7 @@ type Entry =
       rotation: string;
     };
 
-// Swap text/photos here to add more cards — odd entries land left, even land right.
+// Newest first. Odd entries land left, even land right; a year label appears when the year changes.
 const entries: Entry[] = [
   {
     type: 'note',
@@ -52,10 +52,10 @@ const entries: Entry[] = [
   },
   {
     type: 'photo',
-    src: '/side-quest.jpg',
-    caption: 'Attended JS Conf! 🪩',
-    date: 'August 2024',
-    rotation: '-2deg',
+    src: '/avatar.jpg',
+    caption: 'Hack night with friends 🌙',
+    date: 'Nov 2024',
+    rotation: '1.5deg',
   },
   {
     type: 'note',
@@ -67,19 +67,23 @@ const entries: Entry[] = [
   },
   {
     type: 'photo',
-    src: '/avatar.jpg',
-    caption: 'Hack night with friends 🌙',
-    date: 'Nov 2024',
-    rotation: '1.5deg',
+    src: '/side-quest.jpg',
+    caption: 'Attended JS Conf! 🪩',
+    date: 'August 2024',
+    rotation: '-2deg',
   },
 ];
+
+function yearOf(date: string) {
+  return date.match(/\d{4}/)?.[0] ?? '';
+}
 
 export function ScrapbookTimeline() {
   return (
     <section className="relative w-full">
       {/* scatter set — page gutters around the timeline, NOT in the flow; desktop only */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden lg:block">
-        <div className="absolute left-6 top-[240px] w-[150px]" style={{ transform: 'rotate(-9deg)' }}>
+        <div className="absolute left-4 top-[140px] w-[150px]" style={{ transform: 'rotate(-9deg)' }}>
           <Polaroid src="/ice_cream.jpg" caption="ice cream breaks 🍦" />
         </div>
         <div className="absolute right-2 top-[46%] scale-90" style={{ transform: 'rotate(5deg)' }}>
@@ -143,50 +147,64 @@ export function ScrapbookTimeline() {
         </span>
       </div>
 
-      <h1 className="text-center font-caveat text-4xl text-ink">
-        my scrapbook <span aria-hidden="true">✧</span>
-      </h1>
-      <p className="mt-2 text-center font-caveat text-xl italic text-muted">
-        little moments that made me, me — wins, talks &amp; new desks ✎
+      <h2 className="text-center font-display text-4xl leading-none text-ink italic md:text-[52px]">
+        my{' '}
+        <span className="bg-[linear-gradient(transparent_60%,var(--color-yellow)_60%,var(--color-yellow)_92%,transparent_92%)] px-1">
+          scrapbook
+        </span>
+      </h2>
+      <p className="mx-auto mt-4 max-w-reading text-center text-[17px] leading-[1.7] text-ink-soft">
+        little moments that made me, me: wins, talks &amp; new desks
       </p>
 
-      <div className="relative mt-12">
+      <div className="relative mt-heading">
         {/* center spine — desktop only */}
         <div
           aria-hidden="true"
-          className="absolute left-1/2 top-0 hidden h-full -translate-x-1/2 border-l-2 border-dashed border-ink/20 md:block"
+          className="absolute left-1/2 top-0 hidden h-full -translate-x-1/2 border-l-2 border-dashed border-accent/30 md:block"
         />
 
         <div className="flex flex-col gap-12 md:gap-16">
           {entries.map((entry, i) => {
             const left = i % 2 === 0;
+            const year = entry.date ? yearOf(entry.date) : '';
+            const newYear = year !== '' && year !== (i > 0 ? yearOf(entries[i - 1].date ?? '') : '');
             return (
-              <div key={i} className="relative">
-                {/* spine marker pinned on the center line */}
-                <span
-                  aria-hidden="true"
-                  className="absolute left-1/2 top-1/2 hidden size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-pink-deep shadow-card ring-4 ring-cream md:block"
-                />
-                {/* mobile: single stacked card */}
-                <div className="flex justify-center md:hidden">
-                  <Card entry={entry} />
-                </div>
-                {/* desktop: alternating two-column timeline */}
-                <div className="hidden md:grid md:grid-cols-2 md:items-center">
-                  <div className={`flex ${left ? 'justify-end pr-14' : ''}`}>
-                    {left ? <Card entry={entry} /> : <span aria-hidden="true" />}
+              <React.Fragment key={i}>
+                {newYear && (
+                  <div className="relative flex justify-center">
+                    <span className="relative z-10 rounded-full border border-accent/25 bg-pink-soft px-4 py-1 font-mono text-xs tracking-[0.18em] text-accent-deep">
+                      {year}
+                    </span>
                   </div>
-                  <div className={`flex ${left ? '' : 'justify-start pl-14'}`}>
-                    {left ? <span aria-hidden="true" /> : <Card entry={entry} />}
+                )}
+                <div className="relative">
+                  {/* spine marker pinned on the center line */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-1/2 top-1/2 hidden size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-card ring-4 ring-cream md:block"
+                  />
+                  {/* mobile: single stacked card */}
+                  <div className="flex justify-center md:hidden">
+                    <Card entry={entry} />
+                  </div>
+                  {/* desktop: alternating two-column timeline */}
+                  <div className="hidden md:grid md:grid-cols-2 md:items-center">
+                    <div className={`flex ${left ? 'justify-end pr-14' : ''}`}>
+                      {left ? <Card entry={entry} /> : <span aria-hidden="true" />}
+                    </div>
+                    <div className={`flex ${left ? '' : 'justify-start pl-14'}`}>
+                      {left ? <span aria-hidden="true" /> : <Card entry={entry} />}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </React.Fragment>
             );
           })}
         </div>
       </div>
 
-      <p className="mt-16 text-center font-caveat text-lg italic text-muted">
+      <p className="mt-16 text-center font-caveat text-xl text-ink-soft">
         that&apos;s all for now... more to come! ♡
       </p>
     </section>

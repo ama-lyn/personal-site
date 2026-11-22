@@ -4,7 +4,7 @@ import { posts } from '../components/journal/posts';
 
 export default function BlogPage() {
   return (
-    <PageShell nav="sticker">
+    <PageShell nav="envelope">
       <div className="mx-auto w-full max-w-reading">
         <h1 className="font-display text-4xl leading-[1.05] text-ink italic md:text-[52px]">My journal</h1>
 
