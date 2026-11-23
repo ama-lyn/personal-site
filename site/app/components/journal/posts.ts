@@ -9,6 +9,7 @@ export type PostSection = {
 export type Post = {
   slug: string;
   title: string;
+  emoji?: string;
   excerpt: string;
   body: string[];
   month: string;
