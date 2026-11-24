@@ -2,12 +2,17 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { PageShell } from '../../components/layout/PageShell'
+import { FactsPanel } from '../../components/work/FactsPanel'
+import { SectionBlocks } from '../../components/work/Blocks'
+import { OrgMark } from '../../components/work/OrgMark'
 import { Preview } from '../../components/work/Preview'
 import { SectionNav } from '../../components/work/SectionNav'
+import { TagChip } from '../../components/work/TagChip'
+import { UpNext } from '../../components/work/UpNext'
 import { getProject, projects, statusLabel } from '../../components/work/projects'
 
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }))
+  return projects.filter((project) => !project.comingSoon).map((project) => ({ slug: project.slug }))
 }
 
 export async function generateMetadata({
@@ -23,14 +28,9 @@ export async function generateMetadata({
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const project = getProject(slug)
-  if (!project) notFound()
+  if (!project || project.comingSoon) notFound()
 
-  const meta = [
-    { label: 'Role', value: project.role },
-    { label: 'Tools', value: project.tools.join(', ') },
-    { label: 'Timeline', value: project.timeline },
-    { label: 'Status', value: statusLabel[project.status].text.toLowerCase() },
-  ]
+  const status = statusLabel[project.status]
 
   return (
     <PageShell nav="header">
@@ -46,36 +46,40 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         </aside>
 
         <article className="min-w-0">
-          <h1 className="font-display text-4xl leading-none text-ink italic md:text-[52px]">
-            {project.title}
-          </h1>
+          <Preview project={project} className="h-[260px] sm:h-[360px] lg:h-[410px]" />
 
-          <dl className="mt-6 flex flex-wrap gap-x-11 gap-y-4">
-            {meta.map((item) => (
-              <div key={item.label}>
-                <dt className="font-mono text-[11px] tracking-[0.12em] text-ink-soft uppercase">{item.label}</dt>
-                <dd className="mt-1 text-base text-ink">{item.value}</dd>
-              </div>
+          <p className="mt-8 flex items-center gap-2.5 text-base text-ink">
+            <OrgMark project={project} size={24} />
+            {project.context}
+          </p>
+          <h1 className="mt-2 font-display text-4xl leading-none text-ink italic md:text-[52px]">{project.title}</h1>
+          <div className="mt-5 flex flex-wrap gap-2.5">
+            {project.tag && <TagChip icon={project.tag.icon}>{project.tag.label}</TagChip>}
+            <TagChip dot={status.dot}>{status.text}</TagChip>
+            {project.topics?.map((topic, i) => (
+              <TagChip key={`${topic}-${i}`}>{topic}</TagChip>
             ))}
-          </dl>
+          </div>
 
-          <Preview project={project} className="mt-8 h-[260px] sm:h-[360px] lg:h-[410px]" />
-
-          {project.sections.map((section) => (
+          {project.sections.map((section, index) => (
             <section key={section.id} id={section.id} className="mt-16 scroll-mt-8">
               <p className="font-mono text-sm font-bold tracking-[0.12em] text-accent-deep uppercase">
                 {section.label}
               </p>
-              <h2 className="mt-3.5 text-[28px] leading-[1.2] font-extrabold text-ink md:text-4xl">
+              <h2 className="mt-3.5 text-[24px] leading-[1.2] font-extrabold text-ink md:text-4xl">
                 {section.heading}
               </h2>
-              {section.body.map((paragraph, index) => (
-                <p key={index} className="mt-4 text-[17px] leading-[1.7] text-ink">
+              {section.body.map((paragraph, i) => (
+                <p key={i} className="mt-4 text-base leading-[1.7] text-ink md:text-[17px]">
                   {paragraph}
                 </p>
               ))}
+              <SectionBlocks blocks={section.blocks} />
+              {index === 0 && <FactsPanel project={project} />}
             </section>
           ))}
+
+          <UpNext current={project} />
         </article>
       </div>
     </PageShell>
