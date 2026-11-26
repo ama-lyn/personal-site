@@ -70,23 +70,27 @@ function Reflections({ items }: { items: Extract<Block, { type: 'reflections' }>
   return (
     <div className="mt-10 flex flex-col gap-12">
       {items.map((item, i) => (
-        <div key={`${i}-${item.title}`} className="grid gap-4 md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] md:gap-10">
-          <div>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-              className="size-6 text-accent-deep"
-            >
-              {icons[item.icon]}
-            </svg>
-            <h3 className="mt-3 text-xl leading-[1.25] font-extrabold text-ink">{item.title}</h3>
-          </div>
-          <p className={body}>{item.body}</p>
+        // icon on top, then the title and the text side by side on one baseline
+        <div
+          key={`${i}-${item.title}`}
+          className="grid gap-y-3 md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] md:items-baseline md:gap-x-10"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className="size-6 text-accent-deep md:col-start-1 md:row-start-1"
+          >
+            {icons[item.icon]}
+          </svg>
+          <h3 className="text-xl leading-[1.25] font-extrabold text-ink md:col-start-1 md:row-start-2">
+            {item.title}
+          </h3>
+          <p className={`${body} md:col-start-2 md:row-start-2`}>{item.body}</p>
         </div>
       ))}
     </div>

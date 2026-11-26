@@ -346,7 +346,7 @@ export const projects: Project[] = [
           },
           {
             type: 'video',
-            youtubeId: '',
+            youtubeId: 'aqz-KE-bpKQ', // placeholder (Big Buck Bunny, Blender Foundation, CC BY 3.0): replace with your own video id
             title: 'Stabilisha Hackathon Demo',
             caption: 'Walkthrough of our Girl Code x Absa Hackathon submission',
           },
@@ -477,7 +477,7 @@ export const projects: Project[] = [
           },
           {
             type: 'video',
-            youtubeId: '',
+            youtubeId: 'aqz-KE-bpKQ', // placeholder (Big Buck Bunny, Blender Foundation, CC BY 3.0): replace with your own video id
             title: 'WasteLink AI Pitch & Walkthrough',
             caption: 'Our winning Kytabu | AfCEN hackathon demo',
           },
